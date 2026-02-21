@@ -4,15 +4,15 @@ Record audio in the browser, transcribe with **Sarvam Saaras v3**, clean with **
 
 ## API keys (both required)
 
-1. In the **voiceflow** folder, duplicate **`env.example`** and rename the copy to **`env`** (no dot).
-2. Open **`env`** and set both keys:
-   ```
-   SARVAM_API_KEY=your_sarvam_key_here
-   GROQ_API_KEY=your_groq_key_here
-   ```
-   - **Sarvam**: https://www.sarvam.ai/ (transcription).
-   - **Groq**: https://console.groq.com/keys (free, no card; cleaning).
-3. Save. Do not share or commit `env`.
+**Local run:** In the **voiceflow** folder, duplicate **`env.example`** and rename the copy to **`env`** (no dot). Add:
+```
+SARVAM_API_KEY=your_sarvam_key_here
+GROQ_API_KEY=your_groq_key_here
+```
+- **Sarvam**: https://www.sarvam.ai/ (transcription).
+- **Groq**: https://console.groq.com/keys (free, no card; cleaning).
+
+**Streamlit Cloud:** Use [Secrets](#deploy-on-streamlit-cloud) (see below). Do not commit `env` or any file containing keys.
 
 ## How to run
 
@@ -33,14 +33,32 @@ Record audio in the browser, transcribe with **Sarvam Saaras v3**, clean with **
 
 4. Your browser will open (or go to the URL shown, usually **http://localhost:8501**). Use the mic to record, choose Native or Roman script and cleaning style, then view raw and cleaned transcripts.
 
+## Deploy on Streamlit Cloud
+
+1. Push this repo to **GitHub** (do not commit `env` or any file with real keys; they are in `.gitignore`).
+2. Go to [share.streamlit.io](https://share.streamlit.io), sign in with GitHub, and click **New app**. Select your repo and set **Main file path** to `app.py`.
+3. Before or after deploying, open your app → **Settings** (⚙️) → **Secrets**.
+4. Add your keys in **TOML** format, for example:
+   ```toml
+   SARVAM_API_KEY = "your_sarvam_key_here"
+   GROQ_API_KEY = "your_groq_key_here"
+   ```
+   Optional (e.g. to change cleaning model):
+   ```toml
+   GROQ_MODEL = "llama-3.1-8b-instant"
+   ```
+5. Save. Streamlit Cloud will redeploy if needed; the app will read these secrets automatically.
+
+The app reads from **environment variables** (set by Streamlit Cloud from your Secrets) and from **st.secrets**, so the same code works locally (using `env`) and on Streamlit Cloud (using the dashboard Secrets).
+
 ## Project layout
 
 ```
 voiceflow/
 ├── app.py           # Streamlit app
 ├── requirements.txt
-├── env.example      # copy to "env" and add SARVAM_API_KEY + GROQ_API_KEY
-├── env              # your keys (create this; do not commit)
+├── env.example      # copy to "env" for local; use Streamlit Secrets for cloud
+├── .gitignore       # ignores env, .env, .streamlit/secrets.toml
 └── README.md
 ```
 
