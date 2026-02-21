@@ -10,22 +10,33 @@ import httpx
 import streamlit as st
 from dotenv import load_dotenv
 
-# Load API key from "env" in same folder as this script (no leading dot for Mac)
+# Load API keys: .env (local) or Streamlit Cloud secrets (injected as env vars / st.secrets)
 _app_dir = Path(__file__).resolve().parent
 for env_file in (_app_dir / ".env", _app_dir / "env"):
     if env_file.exists():
         try:
             load_dotenv(env_file)
         except Exception:
-            pass  # e.g. parse error; env may still be set elsewhere
+            pass
 
-SARVAM_API_KEY = os.getenv("SARVAM_API_KEY")
+
+def _secret(key: str) -> str | None:
+    """Get secret from env (local or Streamlit Cloud) or st.secrets."""
+    val = os.getenv(key)
+    if val:
+        return val
+    try:
+        return st.secrets.get(key)
+    except Exception:
+        return None
+
+
+SARVAM_API_KEY = _secret("SARVAM_API_KEY")
 SARVAM_STT_URL = "https://api.sarvam.ai/speech-to-text"
 
-# Cleaning: Groq (free tier, no card, fast). Get key at https://console.groq.com/keys
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_API_KEY = _secret("GROQ_API_KEY")
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MODEL = os.getenv("GROQ_MODEL") or "llama-3.3-70b-versatile"
+GROQ_MODEL = os.getenv("GROQ_MODEL") or _secret("GROQ_MODEL") or "llama-3.3-70b-versatile"
 
 # Comprehensive speech-to-text refinement prompt (same language & script, no translation)
 # Style addons only when user explicitly chooses bullet/email
