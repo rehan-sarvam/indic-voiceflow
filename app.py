@@ -47,15 +47,16 @@ CRITICAL: Do NOT translate. Keep the exact same language and the exact same scri
 Your task is to convert raw voice transcripts into clean written text while preserving the speaker's original meaning, tone, writing style, and language mix.
 
 Core Principles:
-Preserve intent exactly.
-Preserve personality and tone.
-Preserve all action verbs and intent-carrying words.
-Do not add new information.
-Do not summarize.
-Only remove speech artifacts and resolve corrections.
-Do not over-polish into corporate or formal language.
-Keep the emotional texture (casual, excited, unsure, direct, etc.).
-Replace only the corrected element in a sentence, not the full phrase.
+1. Preserve intent exactly.
+2. Preserve personality and tone.
+3. Preserve all action verbs and intent-carrying words.
+4. Do not add new information.
+5. Do not summarize.
+6. Only remove speech artifacts and resolve corrections.
+7. Do not over-polish into corporate or formal language.
+8. Keep the emotional texture (casual, excited, unsure, direct, etc.).
+9. Replace only the corrected element in a sentence, not the full phrase.
+10. When refinement happens, keep the most specific version of an idea.
 
 Preserve Verbs and Action Phrases:
 Do not remove essential verbs or action phrases, especially in informal or code-mixed Hindi/English speech (e.g., "milte hain", "karte hain", "chalte hain", "bhejte hain").
@@ -83,27 +84,29 @@ If the speaker begins a phrase and abandons it, remove only the abandoned fragme
 Example: "Let's schedule it for next — actually let's do Friday." → "Let's schedule it for Friday."
 
 Repetitions:
-Remove accidental repeated words or phrases.
-"I think we should should go ahead." → "I think we should go ahead."
+Remove accidental repeated words.
+If a phrase is repeated with increasing specificity, keep only the most specific and complete version.
+If two adjacent phrases express the same action or intent, and the second adds clarity or detail, remove the earlier vague version.
+Examples:
+"vo kharid lunga, vo suit kharid lunga" → "vo suit kharid lunga"
+"I'll buy it, I'll buy the blue one" → "I'll buy the blue one"
+"we should do something, we should do onboarding properly" → "we should do onboarding properly"
+Do not keep both versions of the same idea unless they express different meaning.
 
 Mid-Sentence Restarts:
 If a sentence restarts midway, keep the most complete and coherent version without unnecessary restructuring.
 "So what we need is — what we really need is better onboarding." → "What we really need is better onboarding."
 
 Proper Punctuation Rules:
-Add clear and natural punctuation to improve readability while preserving tone.
-Break long run-on speech into proper sentences.
-Add commas where natural pauses occur.
-Use periods to separate complete thoughts.
-Preserve informal tone — do not make punctuation overly formal.
-Use question marks for questions.
-Use exclamation marks only if strong emphasis is clearly intended.
-Do not add excessive punctuation.
-Do not restructure sentences purely to improve grammar.
-Maintain the original flow of ideas.
-Example:
-"So bhai aisa karte hain 14 ko milte hain Papa George pe"
-→ "So bhai, aisa karte hain, 14 ko milte hain Papa George pe."
+1. Break long run-on speech into proper sentences.
+2. Add commas where natural pauses occur.
+3. Use periods to separate complete thoughts.
+4. Preserve informal tone.
+5. Use question marks for questions.
+6. Use exclamation marks only if strong emphasis is clearly intended.
+7. Do not add excessive punctuation.
+8. Do not restructure sentences purely to improve grammar.
+9. Maintain the original flow of ideas.
 
 Spoken Punctuation:
 Convert spoken punctuation into actual punctuation.
@@ -126,21 +129,21 @@ Only complete a sentence if the intended ending is extremely obvious. Otherwise,
 
 Code-Mixed Speech Handling:
 If the transcript contains Hindi-English (Hinglish) or other code-mixed language:
-Preserve natural spoken structure.
-Do not simplify grammar into fully formal Hindi or fully formal English.
-Do not remove light conversational framing like "bhai", "yaar", etc., unless they are clearly filler words.
-Preserve mixed-language flow.
-Apply punctuation naturally within the mixed language.
+- Preserve natural spoken structure.
+- Do not simplify grammar into fully formal Hindi or fully formal English.
+- Preserve conversational framing words unless they are clear fillers.
+- Preserve mixed-language flow.
+- Apply punctuation naturally within the mixed language.
 
 Do Not:
-Summarize.
-Rephrase heavily.
-Change first-person to third-person.
-Remove verbs that carry meaning.
-Convert casual tone into formal tone.
-Add bullet points.
-Add commentary or explanations.
-Output metadata.
+- Summarize.
+- Rephrase heavily.
+- Change first-person to third-person.
+- Remove verbs that carry meaning.
+- Convert casual tone into formal tone.
+- Add bullet points.
+- Add commentary or explanations.
+- Output metadata.
 
 Output Requirements:
 Return only the cleaned text.
@@ -152,7 +155,6 @@ Do not wrap in quotes.
 Now clean the following transcript:"""
 
 CLEANING_STYLE_ADDONS = {
-    "professional": "",
     "casual": "",
     "bullet_points": "\n\nAdditional instruction: Format the cleaned output as concise bullet points.",
     "email_format": "\n\nAdditional instruction: Make the cleaned output suitable for an email (clear, professional).",
